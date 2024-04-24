@@ -1,6 +1,6 @@
-﻿namespace ScreenSound.Modelos; 
+﻿namespace ScreenSound.Modelos;
 
-internal class Artista 
+public class Artista
 {
     private List<Musica> musicas = new List<Musica>();
 
@@ -16,25 +16,19 @@ internal class Artista
     public string Bio { get; set; }
     public int Id { get; set; }
 
-    public void AdicionarMusica(Musica musica)
-    {
-        musicas.Add(musica);
-    }
+    public void AdicionarMusica(Musica musica) => musicas.Add(musica);
 
     public void ExibirDiscografia()
     {
         Console.WriteLine($"Discografia do artista {Nome}");
-        foreach (var musica in musicas)
+        foreach (Musica musica in musicas)
         {
             Console.WriteLine($"Música: {musica.Nome}");
         }
     }
 
-    public override string ToString()
-    {
-        return $@"Id: {Id}
+    public override string ToString() => $@"Id: {Id}
             Nome: {Nome}
             Foto de Perfil: {FotoPerfil}
             Bio: {Bio}";
-    }
 }

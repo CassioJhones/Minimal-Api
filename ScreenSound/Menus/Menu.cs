@@ -2,7 +2,7 @@
 
 namespace ScreenSound.Menus;
 
-internal class Menu
+public class Menu
 {
     public void ExibirTituloDaOpcao(string titulo)
     {

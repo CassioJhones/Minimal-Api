@@ -2,7 +2,7 @@
 
 namespace ScreenSound.Menus;
 
-internal class MenuRegistrarArtista : Menu
+public class MenuRegistrarArtista : Menu
 {
     public override void Executar(Dictionary<string, Artista> artistasRegistrados)
     {
