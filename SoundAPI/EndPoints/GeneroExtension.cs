@@ -3,13 +3,20 @@ using ScreenSound.Banco;
 using Sound.Shared.Modelos.Modelos;
 using SoundAPI.Request;
 using SoundAPI.Response;
+
 namespace SoundAPI.EndPoints;
 public static class GeneroExtensions
 {
     public static void AddEndPointGeneros(this WebApplication app)
     {
-        app.MapPost("/Generos", ([FromServices] DAL<Genero> conexao, [FromBody] GeneroRequest generoReq)
-            => conexao.Adicionar(RequestToEntity(generoReq)));
+        app.MapPost("/Generos", (
+            [FromServices] DAL<Genero> conexao,
+            [FromBody] GeneroRequest generoReq) =>
+        {
+            Genero GeneroAdd = RequestToEntity(generoReq);
+            conexao.Adicionar(GeneroAdd);
+            return Results.Ok($"Genero {GeneroAdd.Nome} Adicionado");
+        });
 
         app.MapGet("/Generos", ([FromServices] DAL<Genero> conexao)
             => EntityListToResponseList(conexao.Listar()));
@@ -22,18 +29,17 @@ public static class GeneroExtensions
                 GeneroResponse response = EntityToResponse(genero!);
                 return Results.Ok(response);
             }
-            return Results.NotFound("Gênero não encontrado.");
+            return Results.NotFound($"Gênero {nome} não encontrado.");
         });
 
         app.MapDelete("/Generos/{id}", ([FromServices] DAL<Genero> conexao, int id) =>
         {
             Genero? genero = conexao.RecuperarPor(a => a.Id == id);
             if (genero is null)
-            {
-                return Results.NotFound("Gênero para exclusão não encontrado.");
-            }
+                return Results.NotFound($"Id {id} não encontrado.");
+
             conexao.Deletar(genero);
-            return Results.NoContent();
+            return Results.Ok($"Genero {genero.Nome} Excluido");
         });
     }
     private static Genero RequestToEntity(GeneroRequest generoRequest)
